@@ -82,11 +82,11 @@ namespace RevitAPITrainingSelection
             //////////////    .Cast<FamilySymbol>()
             //////////////    .ToList();
 
-            List<Element> fInstances = new FilteredElementCollector(doc,doc.ActiveView.Id)
-                 .OfCategory(BuiltInCategory.OST_PipeCurves)
+            List<Element> fInstances = new FilteredElementCollector(doc)
+                 .OfCategory(BuiltInCategory.OST_Columns)
                 .WhereElementIsNotElementType().Cast<Element>()
                 .ToList();
-                TaskDialog.Show("Pipes count:", fInstances.Count.ToString());
+                TaskDialog.Show("Columns count:", fInstances.Count.ToString());
           
             return Result.Succeeded;
         }
