@@ -82,12 +82,22 @@ namespace RevitAPITrainingSelection
             //////////////    .Cast<FamilySymbol>()
             //////////////    .ToList();
 
-            List<Element> fInstances = new FilteredElementCollector(doc,doc.ActiveView.Id)
-                 .OfCategory(BuiltInCategory.OST_PipeCurves)
-                .WhereElementIsNotElementType().Cast<Element>()
+            List<Duct> fInstances = new FilteredElementCollector(doc)
+                 .OfCategory(BuiltInCategory.OST_DuctCurves)
+                .WhereElementIsNotElementType().Cast<Duct>()
                 .ToList();
-                TaskDialog.Show("Pipes count:", fInstances.Count.ToString());
-          
+
+            string info = string.Empty;
+            string Text = null;
+            foreach (var item in fInstances.GroupBy(x => x.ReferenceLevel.Name).ToList())
+            {
+                Text += item.Key.ToString() + ": " + item.Count().ToString() + " duct " + "\n";
+            }
+            info += $"Duct all: {fInstances.Count.ToString()} \n, Duct lvl: \n {Text}{Environment.NewLine}";
+            
+            TaskDialog.Show("Duct",info);
+           
+
             return Result.Succeeded;
         }
 
