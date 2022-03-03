@@ -87,16 +87,18 @@ namespace RevitAPITrainingSelection
                 .WhereElementIsNotElementType().Cast<Duct>()
                 .ToList();
 
-            string info = string.Empty;
-            string Text = null;
-            foreach (var item in fInstances.GroupBy(x => x.ReferenceLevel.Name).ToList())
+            var selectedRef = uidoc.Selection.PickObject(ObjectType.Element, "Change element");
+            var selectedElement = doc.GetElement(selectedRef);
+
+            if(selectedElement is Wall)
             {
-                Text += item.Key.ToString() + ": " + item.Count().ToString() + " duct " + "\n";
-            }
-            info += $"Duct all: {fInstances.Count.ToString()} \n, Duct lvl: \n {Text}{Environment.NewLine}";
-            
-            TaskDialog.Show("Duct",info);
-           
+                Parameter lengthParametr = selectedElement.get_Parameter(BuiltInParameter.CURVE_ELEM_LENGTH);
+                if(lengthParametr.StorageType==StorageType.Double)
+                {
+                    double lengthValue = UnitUtils.ConvertFromInternalUnits(lengthParametr.AsDouble(), UnitTypeId.Meters);
+                    TaskDialog.Show("Length",lengthValue.ToString());
+                }
+            }           
 
             return Result.Succeeded;
         }
