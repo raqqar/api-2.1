@@ -1,4 +1,5 @@
 ﻿using Autodesk.Revit.DB;
+using Autodesk.Revit.DB.Plumbing;
 using Autodesk.Revit.UI.Selection;
 using System;
 using System.Collections.Generic;
@@ -8,16 +9,16 @@ using System.Threading.Tasks;
 
 namespace RevitAPITrainingSelection
 {
-    public class WallFilter : ISelectionFilter
+     class PipeFilter : ISelectionFilter
     {
-        public bool AllowElement(Element elem)
+        public bool AllowElement(Element elemPipe)
         {
-            return elem is Wall;
+            return elemPipe is Pipe;
         }
 
         public bool AllowReference(Reference reference, XYZ position)
         {
-            return false;
+            throw new System.NotImplementedException();
         }
     }
 }
